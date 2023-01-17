@@ -1,12 +1,12 @@
-import Node from "./node";
+import Node from "./node.js";
 
-function LinkedList() {
-    this.head = null;
+export default function LinkedList() {
+    this.Head = null;
 }
 
 LinkedList.prototype.append = function (value) {
-    if(!this.head) {
-        this.head = new Node(value);
+    if(!this.Head) {
+        this.Head = new Node(value);
     } else {
         let node = this.tail();
         while(node.nextNode) {
@@ -17,16 +17,16 @@ LinkedList.prototype.append = function (value) {
 }
 
 LinkedList.prototype.prepend = function (value) {
-    if(!this.head) {
-        this.head = new Node(value);
+    if(!this.Head) {
+        this.Head = new Node(value);
     } else {
-        const node = new Node(value, this.head);
-        this.head = node;
+        const node = new Node(value, this.Head);
+        this.Head = node;
     }
 }
 
 LinkedList.prototype.size = function() {
-    let node = this.head;
+    let node = this.Head;
     let count = 0;
     while(node) {
         node = node.nextNode;
@@ -36,11 +36,11 @@ LinkedList.prototype.size = function() {
 }
 
 LinkedList.prototype.head = function() {
-    return this.head;
+    return this.Head;
 }
 
 LinkedList.prototype.tail = function() {
-    let node = this.head.nextNodeNode;
+    let node = this.Head;
     while(node.nextNode) {
         node = node.nextNode;
     }
@@ -48,8 +48,8 @@ LinkedList.prototype.tail = function() {
 }
 
 LinkedList.prototype.at = function(index) {
-    if(index < this.size) {
-        let node = this.head;
+    if(index >= 0 && index < this.size()) {
+        let node = this.Head;
         let count = 0
         while(count < index) {
             node = node.nextNode;
@@ -61,8 +61,15 @@ LinkedList.prototype.at = function(index) {
 }
 
 LinkedList.prototype.pop = function() {
-    let node = this.head;
-    while(node.nextNode.nextNode) {
+    if(this.Head === null) {
+        return null;
+    }
+    let node = this.Head;
+    if(node.nextNode === null) {
+        this.Head = null;
+        return node;
+    }
+    while(node.nextNode.nextNode !== null) {
         node = node.nextNode;
     }
     const tailNodeValue = node.nextNode.value;
@@ -71,7 +78,7 @@ LinkedList.prototype.pop = function() {
 }
 
 LinkedList.prototype.contains = function(value) {
-    let node = this.head;
+    let node = this.Head;
     while(node) {
         if(node.value === value) {
             return true;
@@ -82,7 +89,7 @@ LinkedList.prototype.contains = function(value) {
 }
 
 LinkedList.prototype.find = function(value) {
-    let node = this.head;
+    let node = this.Head;
     let count = 0;
     while(node) {
         if(node.value === value) {
@@ -95,12 +102,47 @@ LinkedList.prototype.find = function(value) {
 }
 
 LinkedList.prototype.toString = function() {
-    let node = this.head;
+    let node = this.Head;
     const values = [];
     while(node) {
         values.push(`( ${node.value} )`);
         node = node.nextNode;
     }
-    values.push(null);
+    values.push('null');
     return values.join(" -> ");
+}
+
+LinkedList.prototype.insert = function(value, index) {
+    // if index greater than size node added at the end;
+    if(index < 0) {
+        return false;
+    } else if(index === 0) {
+        const node = new Node(value, this.Head);
+        this.Head = node;
+        return true;
+    } else if(index === this.size()) {
+        this.tail().nextNode = new Node(value);
+        return true;
+    } else if(index > this.size()) {
+        return false;
+    }
+    const prevNode = this.at(index-1);
+    const newNode = new Node(value, prevNode.nextNode);
+    prevNode.nextNode = newNode;
+    return true;
+}
+
+LinkedList.prototype.removeAt = function(index) {
+    if(index >= this.size() || index < 0) {
+        return false;
+    } else if(index === 0) {
+        const deleteNode = this.Head;
+        this.Head = this.Head.nextNode;
+        return deleteNode
+    }
+    const prevNode = this.at(index-1);
+    const deleteNode = prevNode.nextNode;
+    prevNode.nextNode = deleteNode.nextNode;
+    deleteNode.nextNode = null;
+    return deleteNode;
 }
