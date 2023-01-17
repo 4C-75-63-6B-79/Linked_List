@@ -4,6 +4,8 @@ let linkList = new LinkedList();
 console.log('created a new empty link list');
 console.log(`link list size: ${linkList.size()} | link list: ${linkList.toString()} `);
 
+console.log(`${linkList.find(0)}`);
+
 console.log('adding 0 to the linklist');
 linkList.append(0);
 console.log(`link list size: ${linkList.size()} | link list: ${linkList.toString()} `);

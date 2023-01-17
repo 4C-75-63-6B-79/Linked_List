@@ -40,6 +40,9 @@ LinkedList.prototype.head = function() {
 }
 
 LinkedList.prototype.tail = function() {
+    if(this.Head === null) {
+        return null;
+    } 
     let node = this.Head;
     while(node.nextNode) {
         node = node.nextNode;
@@ -57,12 +60,12 @@ LinkedList.prototype.at = function(index) {
         }
         return node;
     }
-    return null;
+    return false;
 }
 
 LinkedList.prototype.pop = function() {
     if(this.Head === null) {
-        return null;
+        return false;
     }
     let node = this.Head;
     if(node.nextNode === null) {
@@ -98,7 +101,7 @@ LinkedList.prototype.find = function(value) {
         count += 1;
         node = node.nextNode;
     }
-    return null;
+    return -1;
 }
 
 LinkedList.prototype.toString = function() {
@@ -113,7 +116,6 @@ LinkedList.prototype.toString = function() {
 }
 
 LinkedList.prototype.insert = function(value, index) {
-    // if index greater than size node added at the end;
     if(index < 0) {
         return false;
     } else if(index === 0) {
